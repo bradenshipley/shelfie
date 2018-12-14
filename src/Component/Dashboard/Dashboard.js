@@ -7,24 +7,31 @@ class Dashboard extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      inventory: []
+      productinventory: []
     }
   }
   componentDidMount() {
     axios
       .get("/api/inventory")
       .then(response => {
-        this.setState({ inventory: response.data })
+        console.log(response.data)
+        const products = response.data
+        this.setState({ productinventory: products })
       })
       .catch(err => {
         console.log("could not get from server side")
       })
   }
+  ComponentDidUpdate(prevProps, prevState) {
+    if (prevState.productinventory != this.state.productinventory) {
+      //method to go here
+    }
+  }
   render() {
-    const product = this.state.inventory.map(product => {
+    const product = this.state.productinventory.map(product => {
       return (
         <div className='individualProduct'>
-          <span>{product.img}</span>
+          <span>{product.imgURL}</span>
           <span>{product.name}</span>
           <span>{product.price}</span>
         </div>
@@ -32,9 +39,11 @@ class Dashboard extends Component {
     })
     return (
       <div className='Dashboard'>
-        <Header />
-        <div className='ViewProducts'>{product}</div>
-        <Form inventory={this.props.inventory} />
+        <Header className='Header' />
+        <div classname='productviewing'>
+          <Form inventory={this.props.productinventory} className='inventory' />
+          <div className='ViewProducts'>{product}</div>
+        </div>
       </div>
     )
   }

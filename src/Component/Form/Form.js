@@ -1,6 +1,5 @@
 import React, { Component } from "react"
-import Axios from "axios"
-import Header from "../Header/Header"
+import axios from "axios"
 
 class Form extends Component {
   constructor(props) {
@@ -14,6 +13,7 @@ class Form extends Component {
     this.handleNameChange = this.handleNameChange.bind(this)
     this.handlePriceChange = this.handlePriceChange.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
+    this.handleAddProduct = this.handleAddProduct.bind(this)
   }
 
   handleURLChange(e) {
@@ -28,8 +28,19 @@ class Form extends Component {
   handleCancel() {
     this.setState({ updatedURL: "", updatedName: "", updatedPrice: "" })
   }
-  handleAddProduct() {
-    Axios.post("/api/product").then()
+  handleAddProduct(e) {
+    const newProduct = {
+      name: this.state.updatedName,
+      price: this.state.updatedPrice,
+      imgURL: this.state.updatedURL
+    }
+    console.log(newProduct)
+    axios
+      .post("/api/product", newProduct)
+      .then(res => res.status(200))
+      .catch(err => {
+        console.log("cant add product")
+      })
   }
   render() {
     return (
@@ -39,6 +50,7 @@ class Form extends Component {
             src={this.state.imgUrl ? this.state.imgUrl : "defaultURLTOBEADDED"}
             height='100px'
             width='100px'
+            alt=''
           />
           <span>
             Image URL:{" "}
