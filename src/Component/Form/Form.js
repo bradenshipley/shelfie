@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import axios from "axios"
-
+import Header from "../Header/Header"
 class Form extends Component {
   constructor(props) {
     super(props)
@@ -34,24 +34,22 @@ class Form extends Component {
       price: this.state.updatedPrice,
       imgURL: this.state.updatedURL
     }
-    console.log(newProduct)
+    console.log()
     axios
       .post("/api/product", newProduct)
       .then(res => res.status(200))
       .catch(err => {
         console.log("cant add product")
       })
+    this.props.getCurrentInventory()
+    this.handleCancel()
   }
   render() {
     return (
       <div className='Form'>
+        <Header />
         <div className='AddProduct'>
-          <img
-            src={this.state.imgUrl ? this.state.imgUrl : "defaultURLTOBEADDED"}
-            height='100px'
-            width='100px'
-            alt=''
-          />
+          <img src={this.state.imgUrl} height='100px' width='100px' alt='' />
           <span>
             Image URL:{" "}
             <input
